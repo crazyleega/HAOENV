@@ -107,3 +107,6 @@ $ docker exec -it <container> bash
 ```
 
 
+### tips
+For dev 
+mongo 必选先初始化rs.initiate(). mongoconnector 才起的来，ES才能从mongo同步数据

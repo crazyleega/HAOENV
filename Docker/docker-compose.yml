@@ -1,57 +1,57 @@
 version: '2'
 services:
-    mongo2:
-        container_name: "mongo2"
-        image: mongo:3.0.7
-        ports:
-            - "27018:27017"
-            - "28018:28017"
-        command: mongod --replSet rs1 --port 27017 --journal --smallfiles 
-        volumes:
-            - haostay_dev_mongo:/haostay_dev/mongo2
+    # mongo2:
+    #     container_name: "mongo2"
+    #     image: mongo:3.0.7
+    #     ports:
+    #         - "27018:27017"
+    #         - "28018:28017"
+    #     command: mongod --replSet rs1 --port 27017 --journal --smallfiles 
+    #     volumes:
+    #         - haostay_dev_mongo:/haostay_dev/mongo2
 
-    mongo3:
-        container_name: "mongo3"
-        image: mongo:3.0.7
-        ports:
-            - "27019:27017"
-            - "28019:28017"
-        command: mongod --replSet rs1 --port 27017 --journal --smallfiles
-        volumes:
-            - haostay_dev_mongo:/haostay_dev/mongo3
+    # mongo3:
+    #     container_name: "mongo3"
+    #     image: mongo:3.0.7
+    #     ports:
+    #         - "27019:27017"
+    #         - "28019:28017"
+    #     command: mongod --replSet rs1 --port 27017 --journal --smallfiles
+    #     volumes:
+    #         - haostay_dev_mongo:/haostay_dev/mongo3
 
     mongo1:
         container_name: "mongo1"
         image: mongo:3.0.7
         ports:
             - "27017:27017"
-            - "28017:28017"
+            # - "28017:28017"
         command: mongod --replSet rs1 --port 27017 --journal --smallfiles
         volumes:
             - haostay_dev_mongo:/haostay_dev/mongo1
-        links:
-            - mongo2:mongo2
-            - mongo3:mongo3
+        # links:
+        #     - mongo2:mongo2
+        #     - mongo3:mongo3
 
-    mongo-rs-setup:
-        container_name: "mongo-rs-setup"
-        build: ./mongosetup
-        depends_on:
-            - "mongo1"
-            - "mongo2"
-            - "mongo3"
-        links:
-            - mongo1:mongo1
-            - mongo2:mongo2
-            - mongo3:mongo3
-        volumes:
-            - ./scripts:/scripts
-        environment: 
-            - MONGO1=mongo1
-            - MONGO2=mongo2
-            - MONGO3=mongo3
-            - RS=rs1
-        entrypoint: [ "/setup.sh" ]
+    # mongo-rs-setup:
+    #     container_name: "mongo-rs-setup"
+    #     build: ./mongosetup
+    #     depends_on:
+    #         - "mongo1"
+    #         # - "mongo2"
+    #         # - "mongo3"
+    #     links:
+    #         - mongo1:mongo1
+    #         # - mongo2:mongo2
+    #         # - mongo3:mongo3
+    #     volumes:
+    #         - ./scripts:/scripts
+    #     environment: 
+    #         - MONGO1=mongo1
+    #         # - MONGO2=mongo2
+    #         # - MONGO3=mongo3
+    #         - RS=rs1
+    #     entrypoint: [ "/setup.sh" ]
 
     elasticsearch:
         image: elasticsearch:2.3.3
@@ -63,8 +63,8 @@ services:
             - "9300:9300"
         links:
             - mongo1:mongo1
-            - mongo2:mongo2
-            - mongo3:mongo3
+            # - mongo2:mongo2
+            # - mongo3:mongo3
         volumes:
             - haostay_dev_elasticsearch:/haostay_dev/elasticsearch
             - ./scripts/logging.yml:/etc/elasticsearch/logging.yml
@@ -77,7 +77,7 @@ services:
         - haostay_dev_rabbitmq:/haostay_dev/rabbitmq
         ports:
         - "15674:15674"
-        - "5672:5672"
+        - "5672:5672"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
         - "5671:5671"
         - "15672:15672"
         - "15671:15671"
@@ -115,8 +115,8 @@ services:
         links:
             - elasticsearch:elasticsearch
             - mongo1:mongo1
-            - mongo2:mongo2
-            - mongo3:mongo3
+            # - mongo2:mongo2
+            # - mongo3:mongo3
         volumes:
             - haostay_dev_mongoconnector:/haostay_dev/mongoconnector
         entrypoint: [ "/usr/bin/mongoconnector" ]
